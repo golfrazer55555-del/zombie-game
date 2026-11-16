@@ -5483,6 +5483,10 @@ const Main = (function () {
   return { boot, startNew, continueGame, toTitle };
 })();
 
+// 설치형 앱(PWA): 웹 서버에서 열었을 때만 서비스 워커 등록
+if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol) && !window.claude && /\/(index\.html)?$/.test(location.pathname)) {
+  window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(() => { /* 무시 */ }); });
+}
 (function start() {
   const hot = window.claude && window.claude.hot;
   if (hot && typeof hot.snapshot === 'function') {
